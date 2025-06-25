@@ -5,21 +5,30 @@ import jwt from "jsonwebtoken";
 // 🔐 User Signup
 export const handleUserSignup = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, college } = req.body;
+
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    if (role === "mentor" && !college) {
+      return res.status(400).json({ error: "College is required for mentors" });
+    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
     }
 
-    await User.create({ name, email, password, role });
+    await User.create({ name, email, password, role, college: role === "mentor" ? college : undefined });
 
-    return res.status(201).json({ message: "Signup successful" });
+    res.status(201).json({ message: "User created" });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Something went wrong" });
+    res.status(500).json({ error: "Something went wrong" });
   }
 };
+
 
 // 🔐 User Login
 export const handleUserLogin = async (req, res) => {

@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import COLLEGES from "../components/colleges"; // Make sure it exports your new array
+import Select from "react-select";
 
-const Signup = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "aspirant" });
+function Signup() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "aspirant",
+    college: null,
+  });
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -12,88 +21,108 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
-    try {
-      const res = await fetch("http://localhost:8000/user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(form),
-      });
+    // Manually validate college for mentors
+    if (form.role === "mentor" && !form.college) {
+      setError("Mentors must select a college.");
+      return;
+    }
 
-      const data = await res.json();
+    const payload = {
+      name: form.name,
+      email: form.email,
+      password: form.password,
+      role: form.role,
+      college: form.role === "mentor" ? form.college.value : undefined,
+    };
 
-      if (res.ok) {
-        setSuccess("Signup successful! Redirecting to login...");
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 1500);
-      } else {
-        setError(data.error || "Signup failed");
-      }
-    } catch (err) {
-      setError("Something went wrong.");
+    const res = await fetch("http://localhost:8000/user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    });
+
+    if (res.ok) {
+      navigate("/login");
+    } else {
+      alert("Signup failed. Please try again.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-sky-200 to-indigo-300 p-4">
-      <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">Sign Up</h1>
+    <div className="max-w-md mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
 
-        {error && <p className="text-red-600 mb-4 text-sm">{error}</p>}
-        {success && <p className="text-green-600 mb-4 text-sm">{success}</p>}
+      {error && <p className="text-red-600 mb-3">{error}</p>}
 
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
-          type="text"
+          className="w-full border p-2 rounded"
+          placeholder="Name"
           name="name"
-          placeholder="Full Name"
           value={form.name}
           onChange={handleChange}
           required
-          className="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
         />
 
         <input
+          className="w-full border p-2 rounded"
+          placeholder="Email"
           type="email"
           name="email"
-          placeholder="Email"
           value={form.email}
           onChange={handleChange}
           required
-          className="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
         />
 
         <input
+          className="w-full border p-2 rounded"
+          placeholder="Password"
           type="password"
           name="password"
-          placeholder="Password"
           value={form.password}
           onChange={handleChange}
           required
-          className="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
         />
 
         <select
           name="role"
           value={form.role}
           onChange={handleChange}
-          className="w-full mb-6 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          className="w-full border p-2 rounded"
         >
           <option value="aspirant">Aspirant</option>
           <option value="mentor">Mentor</option>
         </select>
 
+        {form.role === "mentor" && (
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">
+              Select College
+            </label>
+            <Select
+              options={COLLEGES}
+              value={form.college}
+              onChange={(selected) =>
+                setForm({ ...form, college: selected })
+              }
+              placeholder="Choose your college"
+              className="text-black"
+              isSearchable
+            />
+          </div>
+        )}
+
         <button
           type="submit"
-          className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
-          Create Account
+          Sign Up
         </button>
       </form>
     </div>
   );
-};
+}
 
 export default Signup;

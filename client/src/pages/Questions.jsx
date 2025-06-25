@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Select from "react-select";
-import COLLEGES from "../components/colleges"; // assumes formatted value-label pairs
+import COLLEGES from "../components/colleges"; // assumes value-label pairs
 
 const TAG_OPTIONS = [
   { value: "hostel", label: "Hostel" },
@@ -33,7 +33,7 @@ function Questions() {
       .then((res) => res.json())
       .then((data) => {
         setQuestions(data);
-        setFiltered(data); // initial state
+        setFiltered(data);
       })
       .catch((err) => console.error("Error fetching questions:", err));
   }, []);
@@ -99,9 +99,12 @@ function Questions() {
         <div className="space-y-6">
           {filtered.map((q) => (
             <div key={q._id} className="p-5 bg-white rounded-xl shadow hover:shadow-md transition">
-              <h2 className="text-xl font-semibold text-blue-600 mb-1">
-                {q.title}
-              </h2>
+              <Link to={`/questions/${q._id}`}>
+                <h2 className="text-xl font-semibold text-blue-600 mb-1 hover:underline">
+                  {q.title}
+                </h2>
+              </Link>
+
               <p className="text-gray-800">{q.description}</p>
 
               <div className="mt-3 text-sm text-gray-600 flex flex-wrap gap-4 items-center">

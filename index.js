@@ -14,6 +14,7 @@ const __dirname = path.dirname(__filename);
 import connectToMongodb from "./connect.js";
 import userRoute from "./routes/user.js";
 import questionRoutes from "./routes/question.js";
+import answerRoutes from "./routes/answer.js";
 
 // Load environment variables
 dotenv.config();
@@ -33,6 +34,7 @@ app.use(express.json());
 // Routes
 app.use("/user", userRoute);
 app.use("/questions", questionRoutes);
+app.use("/answers", answerRoutes);
 // Connect to MongoDB
 connectToMongodb("mongodb://127.0.0.1:27017/shivu")
   .then(() => console.log("✅ MongoDB connected"))

@@ -33,3 +33,15 @@ export const getAllQuestions = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch questions" });
   }
 };
+
+export const getQuestionById = async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id).populate("askedBy", "name role");
+    if (!question) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+    res.json(question);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch question" });
+  }
+};

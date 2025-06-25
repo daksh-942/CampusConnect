@@ -4,12 +4,10 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Questions from './pages/Questions';
 import AskQuestion from './pages/AskQuestion';
-
-
+import Answer from './pages/Answer'; // ✅ Ensure this is imported
 
 function App() {
   return (
-    
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -17,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/questions" element={<Questions />} />
         <Route path="/askquestion" element={<AskQuestion />} />
+        <Route path="/questions/:id" element={<Answer />} /> {/* ✅ This handles answer page */}
       </Routes>
     </Router>
   );
