@@ -45,3 +45,12 @@ export const getQuestionById = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch question" });
   }
 };
+
+export const getMyQuestions = async (req, res) => {
+  try {
+    const questions = await Question.find({ askedBy: req.user._id });
+    res.json(questions);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch your questions" });
+  }
+};

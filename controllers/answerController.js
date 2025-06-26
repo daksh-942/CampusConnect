@@ -45,3 +45,42 @@ export const getAnswersForQuestion = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch answers" });
   }
 };
+
+export const getMyAnswers = async (req, res) => {
+  try {
+    const answers = await Answer.find({ answeredBy: req.user._id }).populate("question", "title");
+    res.json(answers);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch your answers" });
+  }
+};
+
+// controllers/answerController.js
+export const voteAnswer = async (req, res) => {
+  try {
+    const { answerId } = req.params;
+    const userId = req.user._id;
+
+    const answer = await Answer.findById(answerId);
+    if (!answer) return res.status(404).json({ error: "Answer not found" });
+
+    const alreadyVoted = answer.votes.includes(userId);
+
+    if (alreadyVoted) {
+      // Remove vote
+      answer.votes.pull(userId);
+      answer.voteCount -= 1;
+    } else {
+      // Add vote
+      answer.votes.push(userId);
+      answer.voteCount += 1;
+    }
+
+    await answer.save();
+
+    res.json({ voteCount: answer.voteCount, voted: !alreadyVoted });
+  } catch (err) {
+    res.status(500).json({ error: "Could not update vote" });
+  }
+};
+

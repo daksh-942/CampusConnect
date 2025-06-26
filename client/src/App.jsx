@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Questions from './pages/Questions';
 import AskQuestion from './pages/AskQuestion';
 import Answer from './pages/Answer'; // ✅ Ensure this is imported
+import Profile from './pages/Profile'
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Route path="/questions" element={<Questions />} />
         <Route path="/askquestion" element={<AskQuestion />} />
         <Route path="/questions/:id" element={<Answer />} /> {/* ✅ This handles answer page */}
+        <Route path="/profile/:id" element={<Profile />} />
+
       </Routes>
     </Router>
   );

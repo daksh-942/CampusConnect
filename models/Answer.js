@@ -19,6 +19,10 @@ const answerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  // In models/Answer.js
+  votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  voteCount: { type: Number, default: 0 }
+
 });
 
 export default mongoose.model("Answer", answerSchema);
