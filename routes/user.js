@@ -20,6 +20,17 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Node.js Express logout route
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "Lax", // or "None" if using cross-origin and secure cookies
+    secure: false,   // true if using HTTPS in production
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+});
+
+
 router.post("/", handleUserSignup);
 router.post("/login", handleUserLogin);
 

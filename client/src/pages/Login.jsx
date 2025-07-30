@@ -25,12 +25,12 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setSuccess("Login successful! Redirecting...");
+        setSuccess("✅ Login successful! Redirecting...");
         setTimeout(() => {
           window.location.href = "/";
         }, 1500);
       } else {
-        setError(data.error || "Invalid credentials");
+        setError(data.error || "❌ Invalid credentials.");
       }
     } catch (err) {
       setError("Something went wrong.");
@@ -38,45 +38,60 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-sky-100 to-indigo-200 p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md"
-      >
-        <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">
-          Login
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-sky-100 to-purple-100 flex items-center justify-center px-4">
+      <div className="relative w-full max-w-md bg-white shadow-xl rounded-2xl p-8 border border-indigo-100 transition-all duration-300 hover:shadow-2xl">
+        <h1 className="text-4xl font-extrabold text-center text-indigo-700 mb-6 tracking-tight">
+          Welcome Back 👋
         </h1>
 
-        {error && <p className="text-red-600 mb-4 text-sm">{error}</p>}
-        {success && <p className="text-green-600 mb-4 text-sm">{success}</p>}
+        {error && (
+          <div className="text-red-600 bg-red-50 border border-red-300 rounded p-2 mb-4 text-sm text-center animate-pulse">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="text-green-600 bg-green-50 border border-green-300 rounded p-2 mb-4 text-sm text-center animate-pulse">
+            {success}
+          </div>
+        )}
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          className="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-        />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email address"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all"
+            />
+          </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-          className="w-full mb-6 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-        />
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all"
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
-        >
-          Login
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 shadow-md hover:shadow-lg transition-all"
+          >
+            Sign In
+          </button>
+        </form>
+
+        <div className="text-center mt-6 text-sm text-gray-500">
+          Not registered? <a href="/signup" className="text-indigo-600 hover:underline">Create an account</a>
+        </div>
+      </div>
     </div>
   );
 };

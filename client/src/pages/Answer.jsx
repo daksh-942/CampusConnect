@@ -76,15 +76,16 @@ function Answer() {
     return <div className="p-6 text-red-600">Error loading question.</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <div className="bg-white p-6 rounded-xl shadow border">
-        <h2 className="text-3xl font-bold text-blue-700 mb-2">{question.title}</h2>
-        <p className="text-gray-800">{question.description}</p>
-        <div className="mt-4">
+    <div className="max-w-5xl mx-auto p-6 space-y-10">
+      {/* Question Box */}
+      <div className="bg-white p-6 rounded-2xl shadow-lg border border-blue-200">
+        <h2 className="text-3xl font-bold text-indigo-700 mb-3">{question.title}</h2>
+        <p className="text-gray-800 text-lg">{question.description}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
           {question.tags?.map((tag, i) => (
             <span
               key={i}
-              className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2"
+              className="bg-indigo-100 text-indigo-700 text-xs px-3 py-1 rounded-full"
             >
               #{tag}
             </span>
@@ -92,16 +93,21 @@ function Answer() {
         </div>
       </div>
 
+      {/* Answer List */}
       <div>
-        <h3 className="text-2xl font-semibold mb-4 text-gray-800">Answers</h3>
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">Answers</h3>
         {answers.length === 0 ? (
-          <p className="text-gray-500">No answers yet.</p>
+          <p className="text-gray-500 italic">No answers yet. Be the first to help!</p>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {answers.map((a) => (
-              <div key={a._id} className="bg-white p-4 rounded-xl shadow border">
-                <p className="text-gray-900">{a.content}</p>
-                <div className="text-sm text-gray-600 mt-3 flex justify-between items-center">
+              <div
+                key={a._id}
+                className="bg-white p-5 rounded-xl shadow-md border border-gray-200 transition hover:shadow-lg"
+              >
+                <p className="text-gray-900 text-base leading-relaxed">{a.content}</p>
+
+                <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
                   <span>
                     —{" "}
                     {a.answeredBy?._id ? (
@@ -114,20 +120,21 @@ function Answer() {
                     ) : (
                       "Anonymous"
                     )}{" "}
-                    ({a.answeredBy?.role})
+                    ({a.answeredBy?.role || "Student"})
                   </span>
                   <span className="text-xs text-gray-400">
                     {new Date(a.createdAt).toLocaleString()}
                   </span>
                 </div>
+
                 <div className="mt-3 flex items-center gap-3">
                   <button
                     onClick={() => handleVote(a._id)}
-                    className="text-sm text-blue-600 hover:underline flex items-center"
+                    className="text-sm text-indigo-600 font-medium hover:underline flex items-center"
                   >
                     👍 <span className="ml-1">Vote</span>
                   </button>
-                  <span className="text-gray-800 text-sm font-medium">
+                  <span className="text-gray-800 text-sm font-semibold">
                     {a.voteCount || 0} vote{a.voteCount === 1 ? "" : "s"}
                   </span>
                 </div>
@@ -137,23 +144,24 @@ function Answer() {
         )}
       </div>
 
+      {/* Answer Form */}
       {user?.role === "mentor" && user.college === question.college && (
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-xl shadow border space-y-4"
+          className="bg-white p-6 rounded-2xl shadow-xl border border-green-200 space-y-4"
         >
-          <h4 className="text-lg font-semibold text-blue-700">Your Answer</h4>
+          <h4 className="text-xl font-bold text-green-700">Your Answer</h4>
           <textarea
             value={answerText}
             onChange={(e) => setAnswerText(e.target.value)}
-            className="w-full border border-gray-300 p-3 rounded-lg"
-            rows={4}
-            placeholder="Write your answer here"
+            className="w-full border border-gray-300 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+            rows={5}
+            placeholder="Write a thoughtful answer to help the community..."
             required
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+            className="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700 transition font-medium"
           >
             Submit Answer
           </button>
