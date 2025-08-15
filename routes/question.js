@@ -5,7 +5,7 @@ import Question from "../models/Question.js";
 const router = express.Router();
 
 router.get("/", getAllQuestions);
-router.get("/:id", getQuestionById);  // ✅ THIS IS NEEDED
+router.get("/:id", getQuestionById); 
 router.post("/", restrictToLoggedInUserOnly, createQuestion);
 router.get("/user/:id", async (req, res) => {
   const questions = await Question.find({ askedBy: req.params.id });

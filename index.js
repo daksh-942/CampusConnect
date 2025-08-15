@@ -1,23 +1,17 @@
 import express from "express";
-import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
 
-// Convert __dirname for ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Load env vars
+dotenv.config();
 
-// Import custom files using `import`
+// Import custom files
 import connectToMongodb from "./connect.js";
 import userRoute from "./routes/user.js";
 import questionRoutes from "./routes/question.js";
 import answerRoutes from "./routes/answer.js";
 import blogRoutes from "./routes/blogRoutes.js";
-// Load environment variables
-dotenv.config();
 
 // Create app
 const app = express();
@@ -25,21 +19,41 @@ const app = express();
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.json());
+
+// CORS: allow frontend in both dev & prod
+const allowedOrigins = [
+  "http://localhost:5173", // dev
+  process.env.FRONTEND_URL  // prod (Vercel URL)
+];
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return cb(null, true);
+    }
+    cb(new Error("Not allowed by CORS"));
+  },
   credentials: true
 }));
-app.use(express.json());
 
 // Routes
 app.use("/user", userRoute);
 app.use("/questions", questionRoutes);
 app.use("/answers", answerRoutes);
 app.use("/blogs", blogRoutes);
-// Connect to MongoDB
-connectToMongodb("mongodb://127.0.0.1:27017/shivu")
+
+// MongoDB connection
+connectToMongodb(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB error:", err));
 
+// Health check route (optional, useful for Render)
+app.get("/healthz", (req, res) => {
+  res.send("ok");
+});
+
 // Start server
-app.listen(8000, () => console.log("🚀 Server started on http://localhost:8000"));
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server started on port ${PORT}`);
+});

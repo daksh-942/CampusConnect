@@ -15,7 +15,8 @@ export const createQuestion = async (req, res) => {
     });
 
     res.status(201).json(question);
-  } catch (err) {
+  } 
+  catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error creating question" });
   }

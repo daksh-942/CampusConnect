@@ -46,15 +46,6 @@ export const getAnswersForQuestion = async (req, res) => {
   }
 };
 
-export const getMyAnswers = async (req, res) => {
-  try {
-    const answers = await Answer.find({ answeredBy: req.user._id }).populate("question", "title");
-    res.json(answers);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch your answers" });
-  }
-};
-
 // controllers/answerController.js
 export const voteAnswer = async (req, res) => {
   try {

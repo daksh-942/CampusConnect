@@ -4,7 +4,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Questions from './pages/Questions';
 import AskQuestion from './pages/AskQuestion';
-import Answer from './pages/Answer'; // ✅ Ensure this is imported
+import Answer from './pages/Answer'; 
 import Profile from './pages/Profile'
 import Layout from "./components/Layout";
 import BlogList from "./pages/BlogList";
@@ -18,7 +18,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/questions" element={<Questions />} />
             <Route path="/askquestion" element={<AskQuestion />} />
-            <Route path="/questions/:id" element={<Answer />} /> {/* ✅ This handles answer page */}
+            <Route path="/questions/:id" element={<Answer />} /> 
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
