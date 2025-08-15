@@ -27,7 +27,7 @@ function Questions() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8000/questions", {
+    fetch(`${import.meta.env.BACKEND_URL}/questions`, {
       credentials: "include",
     })
       .then((res) => res.json())

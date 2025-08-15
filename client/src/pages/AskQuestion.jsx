@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import COLLEGES from "../components/colleges";
-
 const TAG_OPTIONS = [
   { value: "hostel", label: "Hostel" },
   { value: "placement", label: "Placement" },
@@ -30,7 +29,7 @@ function AskQuestion() {
     e.preventDefault();
     const tagValues = tags.map((tag) => tag.value);
 
-    const res = await fetch("http://localhost:8000/questions", {
+    const res = await fetch(`${import.meta.env.BACKEND_URL}/questions`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

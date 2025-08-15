@@ -35,7 +35,7 @@ function Signup() {
       college: form.role === "mentor" ? form.college.value : undefined,
     };
 
-    const res = await fetch("http://localhost:8000/user", {
+    const res = await fetch(`${import.meta.env.BACKEND_URL}/user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

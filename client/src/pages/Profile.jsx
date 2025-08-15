@@ -12,9 +12,9 @@ function ProfilePage() {
     const fetchProfile = async () => {
       try {
         const [userRes, qRes, aRes] = await Promise.all([
-          fetch(`http://localhost:8000/user/${id}`, { credentials: "include" }),
-          fetch(`http://localhost:8000/questions/user/${id}`, { credentials: "include" }),
-          fetch(`http://localhost:8000/answers/user/${id}`, { credentials: "include" }),
+          fetch(`${import.meta.env.BACKEND_URL}/user/${id}`, { credentials: "include" }),
+          fetch(`${import.meta.env.BACKEND_URL}/questions/user/${id}`, { credentials: "include" }),
+          fetch(`${import.meta.env.BACKEND_URL}/answers/user/${id}`, { credentials: "include" }),
         ]);
 
         const [userData, qData, aData] = await Promise.all([

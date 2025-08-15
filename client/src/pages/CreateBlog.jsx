@@ -20,7 +20,7 @@ function CreateBlog() {
     e.preventDefault();
     const tagVals = tags.map((t) => t.value);
 
-    const res = await fetch("http://localhost:8000/blogs", {
+    const res = await fetch(`${import.meta.env.BACKEND_URL}/blogs`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

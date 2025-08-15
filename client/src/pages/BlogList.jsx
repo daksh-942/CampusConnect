@@ -17,7 +17,7 @@ function BlogList() {
   const [selectedCollege, setSelectedCollege] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8000/blogs", { credentials: "include" })
+    fetch(`${import.meta.env.BACKEND_URL}/blogs`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         setBlogs(data);

@@ -12,9 +12,9 @@ function Answer() {
   const fetchData = async () => {
     try {
       const [qRes, aRes, uRes] = await Promise.all([
-        fetch(`http://localhost:8000/questions/${id}`, { credentials: "include" }),
-        fetch(`http://localhost:8000/answers/${id}`, { credentials: "include" }),
-        fetch("http://localhost:8000/user/me", { credentials: "include" }),
+        fetch(`${import.meta.env.BACKEND_URL}/questions/${id}`, { credentials: "include" }),
+        fetch(`${import.meta.env.BACKEND_URL}/answers/${id}`, { credentials: "include" }),
+        fetch(`${import.meta.env.BACKEND_URL}/user/me`, { credentials: "include" }),
       ]);
 
       const [qData, aData, uData] = await Promise.all([
