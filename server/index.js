@@ -48,6 +48,9 @@ connectToMongodb(process.env.MONGO_URI)
   .catch((err) => console.error("❌ MongoDB error:", err));
 
 // Health check route (optional, useful for Render)
+app.get('/',(req,res)=>{
+  res.send('daksh is great');
+})
 app.get("/healthz", (req, res) => {
   res.send("ok");
 });
